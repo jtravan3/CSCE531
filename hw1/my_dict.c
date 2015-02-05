@@ -37,21 +37,38 @@ void add_int_to_dict(const char *key, long val)
     p->key = key;
     p->tag = INT_CONST;
     p->u.intconstval = val;
-    if (insert_or_update(p) == 0)
+    if (insert_or_update(p) == 0){
         fprintf(stderr, "Warning: redefinition of %s to %ld\n",
                 key, val);
+    }
 }
 
 // Add a key with a string constant value to the dictionary
 void add_str_to_dict(const char *key, const char *val)
 {
-        // redacted
+    DR p = (DR) malloc(sizeof(DICT_REC));
+    p->in_cycle = FALSE;
+    p->key = key;
+    p->tag = STR_CONST;
+    p->u.strconstval = val;
+    if (insert_or_update(p) == 0){
+        fprintf(stderr, "Warning: redefinition of %s to %s\n",
+                key, val);
+    }
 }
 
 // Add a key with an identifier value to the dictionary
 void add_id_to_dict(const char *key, const char *val)
 {
-        // redacted
+    DR p = (DR) malloc(sizeof(DICT_REC));
+    p->in_cycle = FALSE;
+    p->key = key;
+    p->tag = ID;
+    p->u.idval = val;
+    if (insert_or_update(p) == 0){
+        fprintf(stderr, "Warning: redefinition of %s to %s\n",
+                key, val);
+    }
 }
 
 // Output the substituted value of a defined ID to the output stream
@@ -116,13 +133,13 @@ static int insert_or_update(DR new_item)
 // Marks the new cycle, if there is one
 static void mark_cycle(DR item)
 {
-        // redacted
+   item->in_cycle = TRUE;
 }
 
 // Unmark an existing cycle
 static void unmark_cycle(DR item)
 {
-        // redacted
+   item->in_cycle = FALSE;
 }
 
 

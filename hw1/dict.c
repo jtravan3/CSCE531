@@ -97,8 +97,9 @@ static int insert_or_update(DR new_item)
     int ret;
     const char *key = new_item->key;
     int index = hash(key);
+
     DR p = hash_tab[index], *prev = hash_tab+index;
-    
+
     debug1("insert_or_update(key=%s) called\n", new_item->key);
     while (p!=NULL && strcmp(key,p->key)) {
         prev = &p->next;

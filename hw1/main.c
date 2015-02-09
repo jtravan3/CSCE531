@@ -1,5 +1,8 @@
 /* Dictionary implementation */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "defs.h"
 
 extern boolean isKeyExpected;
@@ -11,6 +14,8 @@ extern int lineNumber;
 extern FILE *yyin;
 extern FILE *yyout;
 
+char *key_str;
+
 main( int argc, char **argv ){
 
     ++argv, --argc;    /* skip over program name */
@@ -19,6 +24,7 @@ main( int argc, char **argv ){
     else
 	yyin = stdin;
 
+    init_dict();
     yylex();
 
 }
@@ -29,6 +35,11 @@ processDefine(char *text) {
     if( isKeyExpected ){
 	if( isId ){
 	    printf("Key: '%s'\n", text);
+
+	    /* copy key value into temp char pointer */
+	    key_str = (char *) malloc(strlen(text)+1);
+	    strcpy(key_str, text);
+
 	    isKeyExpected = FALSE;
 	    isValExpected = TRUE;
 	    isId = FALSE;
@@ -41,16 +52,19 @@ processDefine(char *text) {
 	if(isValExpected){
 	    if(isId){
 		printf("Value: '%s' of type ID\n", text);
+		add_id_to_dict(key_str, text);
 		isId = FALSE;
 	    }
 
 	    if(isInt){
 		printf("Value: '%s' of type INT\n", text);
+		add_int_to_dict(key_str, atol(text));
 		isInt = FALSE;
 	    }
 
 	    if(isStrConst){
 		printf("Value: '%s' of type STR_CONST\n", text);
+		add_str_to_dict(key_str, text);
 		isStrConst = FALSE;
 	    }
 

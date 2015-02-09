@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "my_defs.h"
+#include "defs.h"
 
 #define INITIAL_HASH_SIZE 8
 #define MAX_LOAD_FACTOR 2

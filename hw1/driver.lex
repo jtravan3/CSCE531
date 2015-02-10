@@ -8,7 +8,7 @@
 #include <math.h>
 #include "defs.h"
 
-int lineNumber = 1; 
+int line_num = 1;
 boolean isInt = FALSE;
 boolean isId = FALSE;
 boolean isStrConst = FALSE;
@@ -18,7 +18,7 @@ boolean isValExpected = FALSE;
 
 digit           [0-9]
 int             [-+]*{digit}+
-id              [A-Za-z][A-Za-z0-9]*
+id              [_A-Za-z][_A-Za-z0-9]*
 strconst	["][^\n]*["]
 optwspace	[ \t]*
 wspace		[ \t]+
@@ -35,7 +35,7 @@ newline 	[\n]
 
 {strconst}	 isStrConst = TRUE; processDefine(yytext);
 
-{newline}	 lineNumber++;
+{newline}	 line_num++;
 
 {wspace}   	 /* eat it up */
 

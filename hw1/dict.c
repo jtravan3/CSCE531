@@ -8,10 +8,10 @@
 #define MAX_LOAD_FACTOR 2
 #define SCALE_FACTOR 2
 
-static DR get_item(const char *key);
+static DR get_DR(const char *key);
 static int insert_or_update(DR new_item);
-static void mark_cycle(DR item);
-static void unmark_cycle(DR item);
+//static void mark_cycle(DR item);
+//static void unmark_cycle(DR item);
 static int hash(const char *key);
 static void insert_at_front(DR *list, DR new_item);
 static DR remove_from_front(DR *list);
@@ -38,8 +38,8 @@ void add_int_to_dict(const char *key, long val)
     p->tag = INT_CONST;
     p->u.intconstval = val;
     if (insert_or_update(p) == 0){
-        fprintf(stderr, "Warning: redefinition of %s to %ld\n",
-                key, val);
+//        fprintf(stderr, "Warning: redefinition of %s to %ld\n",
+//                key, val);
     }
 }
 
@@ -52,8 +52,8 @@ void add_str_to_dict(const char *key, const char *val)
     p->tag = STR_CONST;
     p->u.strconstval = val;
     if (insert_or_update(p) == 0){
-        fprintf(stderr, "Warning: redefinition of %s to %s\n",
-                key, val);
+//        fprintf(stderr, "Warning: redefinition of %s to %s\n",
+//                key, val);
     }
 }
 
@@ -66,28 +66,68 @@ void add_id_to_dict(const char *key, const char *val)
     p->tag = ID;
     p->u.idval = val;
     if (insert_or_update(p) == 0){
-        fprintf(stderr, "Warning: redefinition of %s to %s\n",
-                key, val);
+//        fprintf(stderr, "Warning: redefinition of %s to %s\n",
+//                key, val);
     }
 }
 
 // Output the substituted value of a defined ID to the output stream
 void output_substitution(FILE *stream, const char *id)
 {
-        // redacted
+    DR p = (DR) get_DR(id);
+    if(p == NULL){
+	fprintf(stream, "Could not find record for ID\n");
+    } else {
+	fprintf(stream, "===========================\n");
+    	fprintf(stream, "Dictionary Entry\n");
+	fprintf(stream, "Key:      %s\n", p->key);
+
+	if(p->tag == INT_CONST){
+	    fprintf(stream, "Value:    %lu\n", p->u.intconstval);
+	    fprintf(stream, "Tag:      INT_CONST\n");
+	}
+
+	if(p->tag == STR_CONST){
+	    fprintf(stream, "Value:    %s\n", p->u.strconstval);
+	    fprintf(stream, "Tag:      STR_CONST\n");
+	}
+
+	if(p->tag == ID){
+	    fprintf(stream, "Value:    %s\n", p->u.idval);
+	    fprintf(stream, "Tag:      ID\n");
+	}
+
+    	if(p->in_cycle){
+	    fprintf(stream, "In Cycle: TRUE\n");
+	} else {
+	    fprintf(stream, "In Cycle: FALSE\n");
+	}
+	fprintf(stream, "===========================\n");
+    }
 }
 
 
-/* Local routines */
-
 /* Returns NULL if item not found */
-static DR get_item(const char *key)
+DR get_item(const char *key)
 {
     int index = hash(key);
     DR p = hash_tab[index];
     debug1("get_item: p %s NULL\n", p==NULL?"==":"!=");
     while (p!=NULL && strcmp(key,p->key))
         p = p->next;
+    return p;
+}
+
+/* Local routines */
+
+/* Returns NULL if item not found */
+static DR get_DR(const char *key)
+{    
+    int index = hash(key);
+    DR p = hash_tab[index];
+    debug1("get_item: p %s NULL\n", p==NULL?"==":"!=");
+    while(p!=NULL && strcmp(key,p->key))
+	p = p->next;
     return p;
 }
 
@@ -126,19 +166,19 @@ static int insert_or_update(DR new_item)
         ret = 0;
     }
 
-    mark_cycle(new_item);
-    debug("    cycle marked\n");
+//    mark_cycle(new_item);
+//    debug("    cycle marked\n");
     return ret;
 }
 
 // Marks the new cycle, if there is one
-static void mark_cycle(DR item)
+mark_cycle(DR item)
 {
    item->in_cycle = TRUE;
 }
 
 // Unmark an existing cycle
-static void unmark_cycle(DR item)
+unmark_cycle(DR item)
 {
    item->in_cycle = FALSE;
 }

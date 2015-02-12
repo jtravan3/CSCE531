@@ -3,6 +3,10 @@
 /*  process #define directives         */
 /*  Author: jravan                     */
 /*  Date:   02/02/2015                 */
+/*{define}{id}{wspace}{int}{newline}   		isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7); printf("int define");*/
+/*{define}{id}{wspace}{strconst}{newline}  	isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7);*/
+/*{define}{id}{wspace}{id}{newline} 		isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7);*/
+/*.				isFullDefine = FALSE; printf("period");*/
 
 %{
 #include <math.h>
@@ -14,6 +18,8 @@ boolean isId = FALSE;
 boolean isStrConst = FALSE;
 boolean isKeyExpected = FALSE;
 boolean isValExpected = FALSE;
+boolean isDefineLine = FALSE;
+boolean isNewLine = FALSE;
 %}
 
 digit           [0-9]
@@ -27,18 +33,18 @@ newline 	[\n]
 
 %%
 
-{define}	 isKeyExpected = TRUE;	
+{define}			isDefineLine = TRUE; isKeyExpected = TRUE;
 
-{id}             isId = TRUE; processDefine(yytext);
+{id}		       	        isId = TRUE; processDefine(yytext);
 
-{int}		 isInt = TRUE; processDefine(yytext);
+{int}		 		isInt = TRUE; processDefine(yytext);
 
-{strconst}	 isStrConst = TRUE; processDefine(yytext);
+{strconst}	 		isStrConst = TRUE; processDefine(yytext);
 
-{newline}	 line_num++;
+{newline}	 		line_num++; isNewLine = TRUE; processDefine(yytext); isDefineLine = FALSE;
 
-{wspace}   	 /* eat it up */
+{wspace}			/* EAT IT UP*/
 
 %%
 
-/* Empty utils section */
+

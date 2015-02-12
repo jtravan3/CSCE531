@@ -40,6 +40,6 @@ void init_dict();
 void add_int_to_dict(const char *key, long val);
 void add_str_to_dict(const char *key, const char *val);
 void add_id_to_dict(const char *key, const char *val);
-void output_substitution(FILE *stream, const char *id);
+void output_substitution(const char *id);
 
 #endif

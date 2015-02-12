@@ -33,13 +33,15 @@ void init_dict()
 void add_int_to_dict(const char *key, long val)
 {
     DR p = (DR) malloc(sizeof(DICT_REC));
+    char* tmp_key = (char *) malloc(strlen(key)+1);
+    strcpy(tmp_key, key);
     p->in_cycle = FALSE;
-    p->key = key;
+    p->key = tmp_key;
     p->tag = INT_CONST;
     p->u.intconstval = val;
     if (insert_or_update(p) == 0){
-//        fprintf(stderr, "Warning: redefinition of %s to %ld\n",
-//                key, val);
+        fprintf(stderr, "Warning: redefinition of %s to %ld\n",
+                key, val);
     }
 }
 
@@ -47,13 +49,17 @@ void add_int_to_dict(const char *key, long val)
 void add_str_to_dict(const char *key, const char *val)
 {
     DR p = (DR) malloc(sizeof(DICT_REC));
+    char* tmp_key = (char *) malloc(strlen(key)+1);
+    strcpy(tmp_key, key);
+    char* tmp_val = (char *) malloc(strlen(val)+1);
+    strcpy(tmp_val, val);
     p->in_cycle = FALSE;
-    p->key = key;
+    p->key = tmp_key;
     p->tag = STR_CONST;
-    p->u.strconstval = val;
+    p->u.strconstval = tmp_val;
     if (insert_or_update(p) == 0){
-//        fprintf(stderr, "Warning: redefinition of %s to %s\n",
-//                key, val);
+        fprintf(stderr, "Warning: redefinition of %s to %s\n",
+                key, val);
     }
 }
 
@@ -61,51 +67,70 @@ void add_str_to_dict(const char *key, const char *val)
 void add_id_to_dict(const char *key, const char *val)
 {
     DR p = (DR) malloc(sizeof(DICT_REC));
+    char* tmp_key = (char *) malloc(strlen(key)+1);
+    strcpy(tmp_key, key);
+    char* tmp_val = (char *) malloc(strlen(val)+1);
+    strcpy(tmp_val, val);
     p->in_cycle = FALSE;
-    p->key = key;
+    p->key = tmp_key;
     p->tag = ID;
-    p->u.idval = val;
+    p->u.idval = tmp_val;
     if (insert_or_update(p) == 0){
-//        fprintf(stderr, "Warning: redefinition of %s to %s\n",
-//                key, val);
+        fprintf(stderr, "Warning: redefinition of %s to %s\n",
+                key, val);
     }
+   
 }
 
 // Output the substituted value of a defined ID to the output stream
-void output_substitution(FILE *stream, const char *id)
+void output_substitution(const char *id)
 {
     DR p = (DR) get_DR(id);
     if(p == NULL){
-	fprintf(stream, "Could not find record for ID\n");
+//	printf("%s", id);
     } else {
-	fprintf(stream, "===========================\n");
-    	fprintf(stream, "Dictionary Entry\n");
-	fprintf(stream, "Key:      %s\n", p->key);
-
 	if(p->tag == INT_CONST){
-	    fprintf(stream, "Value:    %lu\n", p->u.intconstval);
-	    fprintf(stream, "Tag:      INT_CONST\n");
+	    printf("%lu", p->u.intconstval);
 	}
-
 	if(p->tag == STR_CONST){
-	    fprintf(stream, "Value:    %s\n", p->u.strconstval);
-	    fprintf(stream, "Tag:      STR_CONST\n");
+	    printf("%s", p->u.strconstval);
 	}
-
 	if(p->tag == ID){
-	    fprintf(stream, "Value:    %s\n", p->u.idval);
-	    fprintf(stream, "Tag:      ID\n");
+	    printf("%s", p->u.idval);
 	}
-
-    	if(p->in_cycle){
-	    fprintf(stream, "In Cycle: TRUE\n");
-	} else {
-	    fprintf(stream, "In Cycle: FALSE\n");
-	}
-	fprintf(stream, "===========================\n");
     }
+    free(p);
+//    DR p = (DR) get_DR(id);
+//    if(p == NULL){
+//	fprintf(stream, "Could not find record for ID\n");
+//    } else {
+//	fprintf(stream, "===========================\n");
+//    	fprintf(stream, "Dictionary Entry\n");
+//	fprintf(stream, "Key:      %s\n", p->key);
+//
+//	if(p->tag == INT_CONST){
+//	    fprintf(stream, "Value:    %lu\n", p->u.intconstval);
+//	    fprintf(stream, "Tag:      INT_CONST\n");
+//	}
+//
+//	if(p->tag == STR_CONST){
+//	    fprintf(stream, "Value:    %s\n", p->u.strconstval);
+//	    fprintf(stream, "Tag:      STR_CONST\n");
+//	}
+//
+//	if(p->tag == ID){
+//	    fprintf(stream, "Value:    %s\n", p->u.idval);
+//	    fprintf(stream, "Tag:      ID\n");
+//	}
+//
+//    	if(p->in_cycle){
+//	    fprintf(stream, "In Cycle: TRUE\n");
+//	} else {
+//	    fprintf(stream, "In Cycle: FALSE\n");
+//	}
+//	fprintf(stream, "===========================\n");
+//    }
 }
-
 
 /* Returns NULL if item not found */
 DR get_item(const char *key)
@@ -113,8 +138,9 @@ DR get_item(const char *key)
     int index = hash(key);
     DR p = hash_tab[index];
     debug1("get_item: p %s NULL\n", p==NULL?"==":"!=");
-    while (p!=NULL && strcmp(key,p->key))
+    while (p!=NULL && strcmp(key,p->key)){
         p = p->next;
+    }
     return p;
 }
 

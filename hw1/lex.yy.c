@@ -395,7 +395,7 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    8,    8,    8,    8,    8,    8,
         8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
         8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
-        1,    1,    1,    1,    1,    1,    8,    8,    8,    9,
+        1,    1,    1,    1,    8,    1,    8,    8,    8,    9,
 
        10,   11,    8,    8,   12,    8,    8,    8,    8,   13,
         8,    8,    8,    8,    8,    8,    8,    8,    8,    8,
@@ -474,17 +474,23 @@ char *yytext;
 /*  process #define directives         */
 /*  Author: jravan                     */
 /*  Date:   02/02/2015                 */
-#line 8 "driver.lex"
+/*{define}{id}{wspace}{int}{newline}   		isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7); printf("int define");*/
+/*{define}{id}{wspace}{strconst}{newline}  	isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7);*/
+/*{define}{id}{wspace}{id}{newline} 		isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7);*/
+/*.				isFullDefine = FALSE; printf("period");*/
+#line 12 "driver.lex"
 #include <math.h>
 #include "defs.h"
 
-int lineNumber = 1; 
+int line_num = 1;
 boolean isInt = FALSE;
 boolean isId = FALSE;
 boolean isStrConst = FALSE;
 boolean isKeyExpected = FALSE;
 boolean isValExpected = FALSE;
-#line 488 "lex.yy.c"
+boolean isDefineLine = FALSE;
+boolean isNewLine = FALSE;
+#line 494 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -671,10 +677,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 28 "driver.lex"
+#line 34 "driver.lex"
 
 
-#line 678 "lex.yy.c"
+#line 684 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -759,41 +765,41 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 30 "driver.lex"
-isKeyExpected = TRUE;	
+#line 36 "driver.lex"
+isDefineLine = TRUE; isKeyExpected = TRUE;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 32 "driver.lex"
+#line 38 "driver.lex"
 isId = TRUE; processDefine(yytext);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 34 "driver.lex"
+#line 40 "driver.lex"
 isInt = TRUE; processDefine(yytext);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 36 "driver.lex"
+#line 42 "driver.lex"
 isStrConst = TRUE; processDefine(yytext);
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 38 "driver.lex"
-lineNumber++;
+#line 44 "driver.lex"
+line_num++; isNewLine = TRUE; processDefine(yytext); isDefineLine = FALSE;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 40 "driver.lex"
-/* eat it up */
+#line 46 "driver.lex"
+/* EAT IT UP*/
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 42 "driver.lex"
+#line 48 "driver.lex"
 ECHO;
 	YY_BREAK
-#line 797 "lex.yy.c"
+#line 803 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1791,9 +1797,9 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 42 "driver.lex"
+#line 48 "driver.lex"
 
 
 
-/* Empty utils section */
+
 

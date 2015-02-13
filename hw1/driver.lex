@@ -41,10 +41,18 @@ newline 	[\n]
 
 {strconst}	 		isStrConst = TRUE; processDefine(yytext);
 
-{newline}	 		line_num++; isNewLine = TRUE; processDefine(yytext); isDefineLine = FALSE;
+{newline}	 		line_num++; isNewLine = TRUE; processDefine(yytext);  isDefineLine = FALSE;
 
-{wspace}			/* EAT IT UP*/
+{wspace}			test();
 
 %%
 
+
+test() {
+  if(isDefineLine){
+    yytext = NULL;
+  } else {
+printf("%s", yytext);
+  }
+}
 

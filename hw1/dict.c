@@ -21,6 +21,8 @@ int h_size;
 int num_items;
 DR *hash_tab;
 
+extern int line_num;
+
 void init_dict()
 {
     h_size = 0;
@@ -40,8 +42,8 @@ void add_int_to_dict(const char *key, long val)
     p->tag = INT_CONST;
     p->u.intconstval = val;
     if (insert_or_update(p) == 0){
-        fprintf(stderr, "Warning: redefinition of %s to %ld\n",
-                key, val);
+        fprintf(stderr, "Warning: redefinition of %s to %ld at line %d\n",
+                key, val, line_num);
     }
 }
 
@@ -58,8 +60,8 @@ void add_str_to_dict(const char *key, const char *val)
     p->tag = STR_CONST;
     p->u.strconstval = tmp_val;
     if (insert_or_update(p) == 0){
-        fprintf(stderr, "Warning: redefinition of %s to %s\n",
-                key, val);
+        fprintf(stderr, "Warning: redefinition of %s to %s at line %d\n",
+                key, val, line_num);
     }
 }
 
@@ -76,8 +78,8 @@ void add_id_to_dict(const char *key, const char *val)
     p->tag = ID;
     p->u.idval = tmp_val;
     if (insert_or_update(p) == 0){
-        fprintf(stderr, "Warning: redefinition of %s to %s\n",
-                key, val);
+        fprintf(stderr, "Warning: redefinition of %s to %s at line %d\n",
+                key, val, line_num);
     }
    
 }
@@ -85,56 +87,36 @@ void add_id_to_dict(const char *key, const char *val)
 // Output the substituted value of a defined ID to the output stream
 void output_substitution(const char *id)
 {
+
+    if(id == NULL){
+	return;
+    }
     DR p = (DR) get_DR(id);
     if(p == NULL){
-//	printf("%s", id);
+	printf("%s", id);
     } else {
-	if(p->tag == INT_CONST){
-	    printf("%lu", p->u.intconstval);
-	}
-	if(p->tag == STR_CONST){
-	    printf("%s", p->u.strconstval);
-	}
-	if(p->tag == ID){
-	    printf("%s", p->u.idval);
+	if(p->tag == INT_CONST || p->tag == STR_CONST){
+	    if(p->tag == INT_CONST){
+		printf("%i", (int)p->u.intconstval);
+	    }
+	    if(p->tag == STR_CONST){
+		printf("%s", p->u.strconstval);
+	    }
+	} else {
+	    if(p->in_cycle == TRUE){
+		printf("%s", p->key);
+	    } else {
+		output_substitution(p->u.idval);
+	    }
 	}
     }
-    free(p);
-//    DR p = (DR) get_DR(id);
-//    if(p == NULL){
-//	fprintf(stream, "Could not find record for ID\n");
-//    } else {
-//	fprintf(stream, "===========================\n");
-//    	fprintf(stream, "Dictionary Entry\n");
-//	fprintf(stream, "Key:      %s\n", p->key);
-//
-//	if(p->tag == INT_CONST){
-//	    fprintf(stream, "Value:    %lu\n", p->u.intconstval);
-//	    fprintf(stream, "Tag:      INT_CONST\n");
-//	}
-//
-//	if(p->tag == STR_CONST){
-//	    fprintf(stream, "Value:    %s\n", p->u.strconstval);
-//	    fprintf(stream, "Tag:      STR_CONST\n");
-//	}
-//
-//	if(p->tag == ID){
-//	    fprintf(stream, "Value:    %s\n", p->u.idval);
-//	    fprintf(stream, "Tag:      ID\n");
-//	}
-//
-//    	if(p->in_cycle){
-//	    fprintf(stream, "In Cycle: TRUE\n");
-//	} else {
-//	    fprintf(stream, "In Cycle: FALSE\n");
-//	}
-//	fprintf(stream, "===========================\n");
-//    }
+  
+
 }
 
 /* Returns NULL if item not found */
-DR get_item(const char *key)
-{
+DR get_item(const char *key){
+
     int index = hash(key);
     DR p = hash_tab[index];
     debug1("get_item: p %s NULL\n", p==NULL?"==":"!=");
@@ -198,15 +180,44 @@ static int insert_or_update(DR new_item)
 }
 
 // Marks the new cycle, if there is one
-mark_cycle(DR item)
-{
-   item->in_cycle = TRUE;
+mark_cycle(DR item){
+
+    if(item == NULL){
+	return;
+    }
+    DR val_p = (DR) get_item(item->u.idval);
+    if(val_p == NULL){
+	return;
+    }
+    while(val_p->in_cycle == FALSE){
+	val_p->in_cycle = TRUE;
+	val_p = (DR) get_item(val_p->u.idval);
+	if(val_p == NULL){
+	    return 0;
+	}
+    }
+    
+   
 }
 
 // Unmark an existing cycle
-unmark_cycle(DR item)
-{
-   item->in_cycle = FALSE;
+unmark_cycle(DR item){
+
+    if(item == NULL){
+	return;
+    }
+    DR val_p = (DR) get_item(item->u.idval);
+    if(val_p == NULL){
+	return;
+    }
+    while(val_p->in_cycle == TRUE){
+	val_p->in_cycle = FALSE;
+	val_p = (DR) get_item(val_p->u.idval);
+	if(val_p == NULL){
+	    return 0;
+	}
+    }
+      
 }
 
 

@@ -10,8 +10,6 @@
 
 static DR get_DR(const char *key);
 static int insert_or_update(DR new_item);
-//static void mark_cycle(DR item);
-//static void unmark_cycle(DR item);
 static int hash(const char *key);
 static void insert_at_front(DR *list, DR new_item);
 static DR remove_from_front(DR *list);
@@ -116,7 +114,10 @@ void output_substitution(const char *id)
 
 /* Returns NULL if item not found */
 DR get_item(const char *key){
-
+    
+    if(key == NULL){
+	return NULL;
+    }
     int index = hash(key);
     DR p = hash_tab[index];
     debug1("get_item: p %s NULL\n", p==NULL?"==":"!=");
@@ -129,8 +130,11 @@ DR get_item(const char *key){
 /* Local routines */
 
 /* Returns NULL if item not found */
-static DR get_DR(const char *key)
-{    
+static DR get_DR(const char *key){    
+
+    if(key == NULL){
+	return NULL;
+    }
     int index = hash(key);
     DR p = hash_tab[index];
     debug1("get_item: p %s NULL\n", p==NULL?"==":"!=");
@@ -174,8 +178,6 @@ static int insert_or_update(DR new_item)
         ret = 0;
     }
 
-//    mark_cycle(new_item);
-//    debug("    cycle marked\n");
     return ret;
 }
 

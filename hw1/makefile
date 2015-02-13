@@ -15,6 +15,3 @@ lex.yy.c: driver.lex defs.h
 
 clean:
 	rm *.o babycpp lex.yy.c
-
-comment:
-	rm comments.txt

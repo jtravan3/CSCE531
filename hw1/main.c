@@ -51,10 +51,6 @@ processDefine(const char *text) {
 	if(isValExpected){
 	    if(isId){
 		logical_add_id_to_dict(key_str, text);
-//		printf("Key: %s\n", key_str);
-//		printf("Value: ");
-//		output_substitution(key_str);
-//		printf("\n");
 		isId = FALSE;
 	    }
 
@@ -146,7 +142,6 @@ logical_add_id_to_dict(const char *key, const char *val){
 	loop_logic(p, val_p, key, val);
     } else {
 	if(p->in_cycle == TRUE) {
-//	    printf("umnmark: %s\n", p->key);
 	    unmark_cycle(p);
 	    loop_logic(p, val_p, key, val);
 	} else {
@@ -168,10 +163,8 @@ loop_logic(DR p, DR val_p, const char *key, const char *val){
 	        add_id_to_dict(key, val);
 	        breakLoop = TRUE;
 	    } else {
-//		printf("Vals to check: %s to %s\n", key, val_p->u.idval);
 	        if(strstr(key, val_p->u.idval) && strstr(val_p->u.idval, key)){
 		    add_id_to_dict(key, val);
-//		    printf("mark: %s\n", val_p->key);
 		    mark_cycle(val_p);
 		    breakLoop = TRUE;
 	        } else {

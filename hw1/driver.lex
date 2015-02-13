@@ -3,6 +3,7 @@
 /*  process #define directives         */
 /*  Author: jravan                     */
 /*  Date:   02/02/2015                 */
+
 /*{define}{id}{wspace}{int}{newline}   		isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7); printf("int define");*/
 /*{define}{id}{wspace}{strconst}{newline}  	isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7);*/
 /*{define}{id}{wspace}{id}{newline} 		isKeyExpected = TRUE, isFullDefine = TRUE; yyless(7);*/
@@ -43,16 +44,18 @@ newline 	[\n]
 
 {newline}	 		line_num++; isNewLine = TRUE; processDefine(yytext);  isDefineLine = FALSE;
 
-{wspace}			test();
+{wspace}			handle_wspace();
 
 %%
 
 
-test() {
+handle_wspace() {
+
   if(isDefineLine){
     yytext = NULL;
   } else {
-printf("%s", yytext);
+    printf("%s", yytext);
   }
+
 }
 

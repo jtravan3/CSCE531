@@ -1,4 +1,4 @@
-Comments for self-test -------- Thu Feb 12, 2015 at 20:46:41 EST
+Comments for self-test -------- Fri Feb 13, 2015 at 8:58:6 EST
 Checking for automatically generated (illegal) files ... none (OK)
 Building the executable with "make -B" ... succeeded
 
@@ -44,49 +44,25 @@ Running babycpp on test5.c; output sent to test5.i ... finished normally
   test5.i exists; comparing with sol'n file with "diff":
     diff test5.i /acct/s1/jravan/CSCE531/hw1_test/test5.i
   [output files match -- OK]
-Running babycpp on test6.c; output sent to test6.i ... finished abnormally (-0%)
+Running babycpp on test6.c; output sent to test6.i ... finished normally
   Standard error output:
   vvvvv
     Warning: redefinition of E to A at line 25
     Warning: redefinition of E to 0 at line 25
-    Segmentation fault (core dumped)
+    Warning: redefinition of E to G at line 29
+    Warning: redefinition of G to F at line 33
+    Warning: redefinition of F to B at line 34
+    Warning: redefinition of G to G at line 38
+    Warning: redefinition of G to F at line 42
   ^^^^^
   test6.i exists; comparing with sol'n file with "diff":
     diff test6.i /acct/s1/jravan/CSCE531/hw1_test/test6.i
   OUTPUT FILES DIFFER (-5%):
   vvvvv
-    0a1,31
-    > #include <stdio.h>
-    > 
-    > 
-    > int D = 17;
-    > int E = 18;
-    > int F = 19;
-    > int G = 20;
-    > int H = 21;
-    > 
-    > int main()
-    > {
-    >     int i = D;
-    >     int j = D;
-    > 
-    > 
+    16c16
+    <     int k = 0;
+    ---
     >     int k = D;
-    > 
-    > 
-    >     int l = G;
-    > 
-    > 
-    >     int C = F;
-    > 
-    > 
-    >     int m = G;
-    > 
-    > 
-    >     printf("C=%d, D=%d, E=%d, F=%d, G=%d, H=%d,\n", C, D, E, F, G, D);
-    >     printf("i=%d, j=%d, k=%d, l=%d, m=%d\n", i, j, k, l, m);
-    >     return 0;
-    > }
   
   ^^^^^
 Running babycpp on test7.c; output sent to test7.i ... finished normally

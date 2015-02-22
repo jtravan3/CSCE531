@@ -1,0 +1,109 @@
+Comments for self-test -------- Tue Feb 17, 2015 at 16:1:51 EST
+0 illegal files found
+Testing see:
+  Attempting to build see ... ok
+Running see with input p4-correct1.in ... zero termination status
+  p4-correct1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p4-correct2.in ... zero termination status
+  p4-correct2.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p4-error1.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error2.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error3.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error4.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error5.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error6.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error7.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p5-untimed1.in ... zero termination status
+  p5-untimed1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p5-error1.in ... nonzero termination status
+  Contents of file p5-error1.err:
+
+"index 0 out of range"
+
+Running see with input p5-error2.in ... nonzero termination status
+  Contents of file p5-error2.err:
+
+"index 3 out of range"
+
+Running see with input p5-error3.in ... nonzero termination status
+  Contents of file p5-error3.err:
+
+"circular reference found"
+
+Running see with input p6-timed1.in ... zero termination status
+  p6-timed1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p6-timed2.in ... zero termination status
+  p6-timed2.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p6-timed3.in ... zero termination status
+  p6-timed3.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p7-untimed1.in ... zero termination status
+  p7-untimed1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p7-timed1.in ... zero termination status
+  p7-timed1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p7-error1.in ... nonzero termination status
+  Contents of file p7-error1.err:
+
+"index 3 out of range"
+
+Running see with input p7-error2.in ... nonzero termination status
+  Contents of file p7-error2.err:
+
+"index 0 out of range"
+
+Running see with input p7-error3.in ... nonzero termination status
+  Contents of file p7-error3.err:
+
+"circular reference found"
+
+Running see with input p7-error4.in ... nonzero termination status
+  Contents of file p7-error4.err:
+
+"circular reference found"
+
+######################################################
+Summary for self-test:
+  p4-correct1:  ok
+  p4-correct2:  ok
+  p4-error1:  error message ok
+  p4-error2:  error message ok
+  p4-error3:  error message ok
+  p4-error4:  error message ok
+  p4-error5:  error message ok
+  p4-error6:  error message ok
+  p4-error7:  error message ok
+  p5-error1:  error message(s) (check appropriateness)
+  p5-error2:  error message(s) (check appropriateness)
+  p5-error3:  error message(s) (check appropriateness)
+  p5-untimed1:  ok
+  p6-timed1:  ok
+  p6-timed2:  ok
+  p6-timed3:  ok
+  p7-error1:  error message(s) (check appropriateness)
+  p7-error2:  error message(s) (check appropriateness)
+  p7-error3:  error message(s) (check appropriateness)
+  p7-error4:  error message(s) (check appropriateness)
+  p7-timed1:  ok
+  p7-untimed1:  ok
+  see:  ok
+######################################################
+Problem 3: /30
+Problem 4: /30
+Problem 5: /40
+Problem 6: /20
+Problem 7: /30
+Problem X: 

@@ -1,0 +1,21 @@
+Welcome to the Simple Expression Evaluator.
+Enter one expression per line, end with ^D
+
+   1: 17
+   2: 6
+   3: -1
+   4: 17
+   5: 6
+   6: -1
+   7: 17
+   8: 17
+   9: 14
+  10: 14
+  11: 17
+  12: 70
+  13: 70
+  14: -3
+  15: 7
+  16: 8
+  17: 32
+  18: 

@@ -7,6 +7,7 @@
 %{
 #include <math.h>
 #include "defs.h"
+#include "y.tab.h"
 
 int line_num = 1;
 %}
@@ -33,38 +34,25 @@ other		[^a-z0-9]
 
 %%
 
-main( int argc, char **argv ){
-
-    ++argv, --argc;
-    if( argc > 0 )
-	yyin = fopen( argv[0], "r");
-    else
-	yyin = stdin;
-    yylex();
-
-}
-
 
 handle_wspace() {
-
   /* EAT IT UP */
-
 }
 
 handle_digit(){
-
+    yylval.y_int = atol(yytext);
+    return CONST;
 }
 
 handle_var(){
-
+    yylval.y_int = toupper(yytext); 
+    return VAR;
 }
 
 handle_new_line(){
-
     line_num++;
-
 }
 
 handle_other(){
-
+    return atoi(yytext);
 }

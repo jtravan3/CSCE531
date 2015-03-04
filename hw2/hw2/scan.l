@@ -6,29 +6,29 @@
 
 %{
 #include <math.h>
+#include <ctype.h>
 #include "defs.h"
+#include "eval.h"
 #include "y.tab.h"
 
 int line_num = 1;
 %}
 
 digit           [0-9]
-int             [-+]*{digit}+
-var             [a-z]
+int             {digit}+
+var             [a-zA-Z]
 optwspace	[ \t]*
 wspace		[ \t]+
 newline 	[\n]
-other		[^a-z0-9]
+other		[^a-zA-Z0-9]*
 
 %%
 
 {wspace}		handle_wspace();
 
-{digit}			handle_digit();
+{int}			handle_digit();
 
 {var}			handle_var();
-
-{newline}		handle_new_line();
 
 {other}			handle_other();
 
@@ -41,18 +41,22 @@ handle_wspace() {
 
 handle_digit(){
     yylval.y_int = atol(yytext);
+    printf("Handle Digit: '%ld'\n", yylval.y_int);
     return CONST;
 }
 
 handle_var(){
-    yylval.y_int = toupper(yytext); 
+    yylval.y_int = toupper(*yytext); 
+    printf("Handle Variable: '%c'\n", (char)yylval.y_int);
     return VAR;
 }
 
 handle_new_line(){
     line_num++;
+    return *yytext;
 }
 
 handle_other(){
-    return atoi(yytext);
+    printf("Handle Other: '%s'\n", yytext);
+    return *yytext;
 }

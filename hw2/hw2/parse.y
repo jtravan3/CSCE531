@@ -12,8 +12,11 @@
 #include "defs.h"
 #include "eval.h"
 #include "y.tab.h"
-
 #define YYDEBUG 1
+
+extern TN_Array exprs;
+extern Array longVals;
+int line_num = 1;
 %}
 
 %union {
@@ -42,12 +45,12 @@ eval
     ;
 
 line
-    : assign '\n'		{ printf("%ld\n", $1); }
+    : assign '\n'		{ line_num++;  printf("%ld\n", $1); }
     ;
 
 assign
-    : VAR '=' expr		{ $$ = eval_expr($3); set_val($1, eval_expr($3)); }
-    | expr			{ $$ = eval_expr($1); }
+    : VAR '=' expr		{ long eval = eval_expr($3); $$ = eval; set_val($1, eval); insertArray(&longVals, eval); }
+    | expr			{ long eval = eval_expr($1); $$ = eval; insertArray(&longVals, eval);  insertTNArray(&exprs, $1); }
     ;
 
 expr
@@ -67,6 +70,7 @@ term
 
 factor
     : '(' expr ')'		{ $$ = $2; }
+    | '#' CONST			{ $$ = make_int_const_node(getArrayVal(&longVals, ($2-1))); }
     | CONST			{ $$ = make_int_const_node($1); }
     | VAR			{ $$ = make_var_node($1); }
     ;
@@ -101,4 +105,5 @@ yyerror(char *s) {
 print_welcome() {
     printf("Welcome to the Simple Expression Evaluator.\n");
     printf("Enter one expression per line, end with ^D\n\n");
+    printf(" %d: ", line_num);
 }

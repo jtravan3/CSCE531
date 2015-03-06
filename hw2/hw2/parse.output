@@ -1,0 +1,418 @@
+Grammar
+
+    0 $accept: session $end
+
+    1 $@1: /* empty */
+
+    2 session: $@1 eval
+
+    3 eval: eval line
+    4     | /* empty */
+
+    5 line: assign '\n'
+
+    6 assign: VAR '=' expr
+    7       | expr
+
+    8 expr: expr '+' term
+    9     | expr '-' term
+   10     | '+' term
+   11     | '-' term
+   12     | term
+
+   13 term: term '*' factor
+   14     | term '/' factor
+   15     | term '%' factor
+   16     | factor
+
+   17 factor: '(' expr ')'
+   18       | CONST
+   19       | VAR
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'\n' (10) 5
+'%' (37) 15
+'(' (40) 17
+')' (41) 17
+'*' (42) 13
+'+' (43) 8 10
+'-' (45) 9 11
+'/' (47) 14
+'=' (61) 6
+error (256)
+CONST (258) 18
+VAR (259) 6 19
+
+
+Nonterminals, with rules where they appear
+
+$accept (14)
+    on left: 0
+session (15)
+    on left: 2, on right: 0
+$@1 (16)
+    on left: 1, on right: 2
+eval (17)
+    on left: 3 4, on right: 2 3
+line (18)
+    on left: 5, on right: 3
+assign (19)
+    on left: 6 7, on right: 5
+expr (20)
+    on left: 8 9 10 11 12, on right: 6 7 8 9 17
+term (21)
+    on left: 13 14 15 16, on right: 8 9 10 11 12 13 14 15
+factor (22)
+    on left: 17 18 19, on right: 13 14 15 16
+
+
+state 0
+
+    0 $accept: . session $end
+
+    $default  reduce using rule 1 ($@1)
+
+    session  go to state 1
+    $@1      go to state 2
+
+
+state 1
+
+    0 $accept: session . $end
+
+    $end  shift, and go to state 3
+
+
+state 2
+
+    2 session: $@1 . eval
+
+    $default  reduce using rule 4 (eval)
+
+    eval  go to state 4
+
+
+state 3
+
+    0 $accept: session $end .
+
+    $default  accept
+
+
+state 4
+
+    2 session: $@1 eval .
+    3 eval: eval . line
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 6
+    '+'    shift, and go to state 7
+    '-'    shift, and go to state 8
+    '('    shift, and go to state 9
+
+    $default  reduce using rule 2 (session)
+
+    line    go to state 10
+    assign  go to state 11
+    expr    go to state 12
+    term    go to state 13
+    factor  go to state 14
+
+
+state 5
+
+   18 factor: CONST .
+
+    $default  reduce using rule 18 (factor)
+
+
+state 6
+
+    6 assign: VAR . '=' expr
+   19 factor: VAR .
+
+    '='  shift, and go to state 15
+
+    $default  reduce using rule 19 (factor)
+
+
+state 7
+
+   10 expr: '+' . term
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '('    shift, and go to state 9
+
+    term    go to state 17
+    factor  go to state 14
+
+
+state 8
+
+   11 expr: '-' . term
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '('    shift, and go to state 9
+
+    term    go to state 18
+    factor  go to state 14
+
+
+state 9
+
+   17 factor: '(' . expr ')'
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '+'    shift, and go to state 7
+    '-'    shift, and go to state 8
+    '('    shift, and go to state 9
+
+    expr    go to state 19
+    term    go to state 13
+    factor  go to state 14
+
+
+state 10
+
+    3 eval: eval line .
+
+    $default  reduce using rule 3 (eval)
+
+
+state 11
+
+    5 line: assign . '\n'
+
+    '\n'  shift, and go to state 20
+
+
+state 12
+
+    7 assign: expr .
+    8 expr: expr . '+' term
+    9     | expr . '-' term
+
+    '+'  shift, and go to state 21
+    '-'  shift, and go to state 22
+
+    $default  reduce using rule 7 (assign)
+
+
+state 13
+
+   12 expr: term .
+   13 term: term . '*' factor
+   14     | term . '/' factor
+   15     | term . '%' factor
+
+    '*'  shift, and go to state 23
+    '/'  shift, and go to state 24
+    '%'  shift, and go to state 25
+
+    $default  reduce using rule 12 (expr)
+
+
+state 14
+
+   16 term: factor .
+
+    $default  reduce using rule 16 (term)
+
+
+state 15
+
+    6 assign: VAR '=' . expr
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '+'    shift, and go to state 7
+    '-'    shift, and go to state 8
+    '('    shift, and go to state 9
+
+    expr    go to state 26
+    term    go to state 13
+    factor  go to state 14
+
+
+state 16
+
+   19 factor: VAR .
+
+    $default  reduce using rule 19 (factor)
+
+
+state 17
+
+   10 expr: '+' term .
+   13 term: term . '*' factor
+   14     | term . '/' factor
+   15     | term . '%' factor
+
+    '*'  shift, and go to state 23
+    '/'  shift, and go to state 24
+    '%'  shift, and go to state 25
+
+    $default  reduce using rule 10 (expr)
+
+
+state 18
+
+   11 expr: '-' term .
+   13 term: term . '*' factor
+   14     | term . '/' factor
+   15     | term . '%' factor
+
+    '*'  shift, and go to state 23
+    '/'  shift, and go to state 24
+    '%'  shift, and go to state 25
+
+    $default  reduce using rule 11 (expr)
+
+
+state 19
+
+    8 expr: expr . '+' term
+    9     | expr . '-' term
+   17 factor: '(' expr . ')'
+
+    '+'  shift, and go to state 21
+    '-'  shift, and go to state 22
+    ')'  shift, and go to state 27
+
+
+state 20
+
+    5 line: assign '\n' .
+
+    $default  reduce using rule 5 (line)
+
+
+state 21
+
+    8 expr: expr '+' . term
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '('    shift, and go to state 9
+
+    term    go to state 28
+    factor  go to state 14
+
+
+state 22
+
+    9 expr: expr '-' . term
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '('    shift, and go to state 9
+
+    term    go to state 29
+    factor  go to state 14
+
+
+state 23
+
+   13 term: term '*' . factor
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '('    shift, and go to state 9
+
+    factor  go to state 30
+
+
+state 24
+
+   14 term: term '/' . factor
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '('    shift, and go to state 9
+
+    factor  go to state 31
+
+
+state 25
+
+   15 term: term '%' . factor
+
+    CONST  shift, and go to state 5
+    VAR    shift, and go to state 16
+    '('    shift, and go to state 9
+
+    factor  go to state 32
+
+
+state 26
+
+    6 assign: VAR '=' expr .
+    8 expr: expr . '+' term
+    9     | expr . '-' term
+
+    '+'  shift, and go to state 21
+    '-'  shift, and go to state 22
+
+    $default  reduce using rule 6 (assign)
+
+
+state 27
+
+   17 factor: '(' expr ')' .
+
+    $default  reduce using rule 17 (factor)
+
+
+state 28
+
+    8 expr: expr '+' term .
+   13 term: term . '*' factor
+   14     | term . '/' factor
+   15     | term . '%' factor
+
+    '*'  shift, and go to state 23
+    '/'  shift, and go to state 24
+    '%'  shift, and go to state 25
+
+    $default  reduce using rule 8 (expr)
+
+
+state 29
+
+    9 expr: expr '-' term .
+   13 term: term . '*' factor
+   14     | term . '/' factor
+   15     | term . '%' factor
+
+    '*'  shift, and go to state 23
+    '/'  shift, and go to state 24
+    '%'  shift, and go to state 25
+
+    $default  reduce using rule 9 (expr)
+
+
+state 30
+
+   13 term: term '*' factor .
+
+    $default  reduce using rule 13 (term)
+
+
+state 31
+
+   14 term: term '/' factor .
+
+    $default  reduce using rule 14 (term)
+
+
+state 32
+
+   15 term: term '%' factor .
+
+    $default  reduce using rule 15 (term)

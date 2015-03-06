@@ -43,6 +43,18 @@ typedef struct tn {
     } u;
 } TREE_NODE, *TN;
 
+typedef struct {
+  long *array;
+  size_t used;
+  size_t size;
+} Array;
+
+typedef struct {
+  TN *array;
+  size_t used;
+  size_t size;
+}TN_Array;
+
 TN make_bin_op_node(TN l_operand, TN r_operand, BIN_OP_TYPE op);
 TN make_un_op_node(TN operand, UN_OP_TYPE op);
 TN make_int_const_node(long i);

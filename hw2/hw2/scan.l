@@ -11,52 +11,55 @@
 #include "eval.h"
 #include "y.tab.h"
 
-int line_num = 1;
+int line_num = 0;
 %}
 
 digit           [0-9]
 int             {digit}+
 var             [a-zA-Z]
-optwspace	[ \t]*
-wspace		[ \t]+
+wspace		[ \t]
 newline 	[\n]
-other		[^a-zA-Z0-9]*
+other		[^{var}{int}{wspace}{newline}]
 
 %%
 
-{wspace}		handle_wspace();
+{var}			handle_var();
 
 {int}			handle_digit();
 
-{var}			handle_var();
+{wspace}		handle_wspace();
+
+{newline}		handle_new_line();
 
 {other}			handle_other();
 
 %%
 
-
-handle_wspace() {
-  /* EAT IT UP */
-}
-
-handle_digit(){
+int handle_digit(){
     yylval.y_int = atol(yytext);
     printf("Handle Digit: '%ld'\n", yylval.y_int);
     return CONST;
 }
 
-handle_var(){
+int handle_var(){
     yylval.y_int = toupper(*yytext); 
-    printf("Handle Variable: '%c'\n", (char)yylval.y_int);
+    printf("Handle Variable: '%c'\n",(char)yylval.y_int);
     return VAR;
 }
 
-handle_new_line(){
+int handle_new_line(){
     line_num++;
-    return *yytext;
+    printf("Handle Newline on line '%d'\n", line_num);
+    int i = *yytext;
+    return i;
 }
 
-handle_other(){
-    printf("Handle Other: '%s'\n", yytext);
-    return *yytext;
+int handle_wspace(){
+    /* EAT IT UP */
+}
+
+int handle_other(){
+    printf("Handle Other: '%c'\n", *yytext);
+    int i = *yytext;
+    return i;
 }

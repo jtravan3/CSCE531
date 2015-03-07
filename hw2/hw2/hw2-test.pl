@@ -13,7 +13,7 @@
 # This script must be run under the bash shell!
 
 # edit as needed
-$testSuiteDir = "$ENV{HOME}/public_html/csce531/handouts/hw2/test";
+$testSuiteDir = "$ENV{HOME}/CSCE531/HOMEWORK2/hw2/test";
 
 $submission_root = "$ENV{HOME}/courses/csce531/sp14/hw2";
 $timeout = 11;			# seconds (I'm generous, aren't I?)

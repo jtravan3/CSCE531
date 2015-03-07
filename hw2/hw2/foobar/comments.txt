@@ -1,0 +1,254 @@
+Comments for self-test -------- Fri Mar 6, 2015 at 23:24:41 EST
+0 illegal files found
+Testing see:
+  Attempting to build see ... ok
+Running see with input p4-correct1.in ... zero termination status
+  p4-correct1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p4-correct2.in ... zero termination status
+  p4-correct2.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p4-error1.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error2.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error3.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error4.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error5.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error6.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p4-error7.in ... zero termination status
+  Error message matches bison's normal parse error message (ok)
+Running see with input p5-untimed1.in ... zero termination status
+  p5-untimed1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p5-error1.in ... zero termination status
+  Contents of file p5-error1.err:
+
+"ArrayIndexOutOfBoundsException: index greater than size."
+
+Running see with input p5-error2.in ... zero termination status
+  Contents of file p5-error2.err:
+
+"ArrayIndexOutOfBoundsException: index greater than size."
+
+Running see with input p5-error3.in ... zero termination status
+  Contents of file p5-error3.err:
+
+"ArrayIndexOutOfBoundsException: index greater than size."
+
+Running see with input p6-timed1.in ... zero termination status
+  p6-timed1.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p6-timed2.in ... zero termination status
+  p6-timed2.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p6-timed3.in ... zero termination status
+  p6-timed3.out exists
+  Testing output against solution with diff ... files match (ok)
+Running see with input p7-untimed1.in ... zero termination status
+  p7-untimed1.out exists
+  Testing output against solution with diff ... FILES DIFFER:
+6c6,19
+<    3: 
+\ No newline at end of file
+---
+>    3: 6
+>    4: 5
+>    5: 6
+>    6: 7
+>    7: 6
+>    8: 6
+>    9: 7
+>   10: 11
+>   11: 12
+>   12: 10
+>   13: 10
+>   14: 11
+>   15: 12
+>   16: 
+    Retry after stripping nonessentials from output ... STRIPPED TEXTS STILL DIFFER
+
+  myOut = "
+
+3
+5
+6
+5
+6
+7
+6
+6
+7
+11
+12
+10
+10
+11
+12
+"
+  yourOut = "
+
+3
+5
+"
+Running see with input p7-timed1.in ... nonzero termination status
+  p7-timed1.out exists
+  Testing output against solution with diff ... FILES DIFFER:
+0a1,47
+> Welcome to the Simple Expression Evaluator.
+> Enter one expression per line, end with ^D
+> 
+>    1: 1
+>    2: 3
+>    3: 7
+>    4: 15
+>    5: 31
+>    6: 63
+>    7: 127
+>    8: 255
+>    9: 511
+>   10: 1023
+>   11: 2047
+>   12: 4095
+>   13: 272
+>   14: 545
+>   15: 1091
+>   16: 2183
+>   17: 4367
+>   18: 816
+>   19: 1633
+>   20: 3267
+>   21: 6535
+>   22: 5152
+>   23: 2386
+>   24: 4773
+>   25: 1628
+>   26: 3257
+>   27: 6515
+>   28: 5112
+>   29: 2306
+>   30: 4613
+>   31: 1308
+>   32: 2617
+>   33: 5235
+>   34: 2552
+>   35: 5105
+>   36: 2292
+>   37: 4585
+>   38: 1252
+>   39: 2505
+>   40: 5011
+>   41: 2104
+>   42: 3
+>   43: 6312
+>   44: 
+    Retry after stripping nonessentials from output ... STRIPPED TEXTS STILL DIFFER
+
+  myOut = "
+
+1
+3
+7
+15
+31
+63
+127
+255
+511
+1023
+2047
+4095
+272
+545
+1091
+2183
+4367
+816
+1633
+3267
+6535
+5152
+2386
+4773
+1628
+3257
+6515
+5112
+2306
+4613
+1308
+2617
+5235
+2552
+5105
+2292
+4585
+1252
+2505
+5011
+2104
+3
+6312
+"
+  yourOut = "
+
+"
+Running see with input p7-error1.in ... nonzero termination status
+  Contents of file p7-error1.err:
+
+"Syntax error
+Segmentation fault (core dumped)"
+
+Running see with input p7-error2.in ... zero termination status
+  Contents of file p7-error2.err:
+
+"Syntax error"
+
+Running see with input p7-error3.in ... nonzero termination status
+  Contents of file p7-error3.err:
+
+"Syntax error
+Segmentation fault (core dumped)"
+
+Running see with input p7-error4.in ... nonzero termination status
+  Contents of file p7-error4.err:
+
+"Syntax error
+Segmentation fault (core dumped)"
+
+######################################################
+Summary for self-test:
+  p4-correct1:  ok
+  p4-correct2:  ok
+  p4-error1:  error message ok
+  p4-error2:  error message ok
+  p4-error3:  error message ok
+  p4-error4:  error message ok
+  p4-error5:  error message ok
+  p4-error6:  error message ok
+  p4-error7:  error message ok
+  p5-error1:  error message(s) (check appropriateness)
+  p5-error2:  error message(s) (check appropriateness)
+  p5-error3:  error message(s) (check appropriateness)
+  p5-untimed1:  ok
+  p6-timed1:  ok
+  p6-timed2:  ok
+  p6-timed3:  ok
+  p7-error1:  error message(s) (check appropriateness)
+  p7-error2:  error message(s) (check appropriateness)
+  p7-error3:  error message(s) (check appropriateness)
+  p7-error4:  error message(s) (check appropriateness)
+  p7-timed1:  problem(s) found (AND NO STRIPPED OUTPUT MATCH)
+  p7-untimed1:  problem(s) found (AND NO STRIPPED OUTPUT MATCH)
+  see:  ok
+######################################################
+Problem 3: /30
+Problem 4: /30
+Problem 5: /40
+Problem 6: /20
+Problem 7: /30
+Problem X: 
